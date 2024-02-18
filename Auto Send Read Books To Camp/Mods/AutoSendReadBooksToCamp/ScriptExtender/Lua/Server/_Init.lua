@@ -1,7 +1,7 @@
 Ext.Require("Server/Utils.lua")
 Ext.Require("Server/Helpers/Inventory.lua")
 Ext.Require("Server/Config.lua")
-Ext.Require("Server/FoodDelivery.lua")
+Ext.Require("Server/BookDelivery.lua")
 Ext.Require("Server/EventHandlers.lua")
 
 MOD_UUID = "e49ba956-192e-451f-8dde-9c1299ec8881"
