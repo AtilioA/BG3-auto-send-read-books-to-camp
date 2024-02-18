@@ -3,9 +3,9 @@ Ext.Require("Server/Helpers/Book.lua")
 EHandlers = {}
 
 function EHandlers.OnLevelGameplayStarted()
-  if JsonConfig.FEATURES.send_existing_Book.enabled and JsonConfig.FEATURES.send_existing_Book.create_supply_sack then
-    Osi.TimerLaunch("CreateSupplySackTimer", 1500)
-  end
+  -- if JsonConfig.FEATURES.send_existing_Book.enabled and JsonConfig.FEATURES.send_books.create_supply_sack then
+  -- Osi.TimerLaunch("CreateSupplySackTimer", 1500)
+  -- end
 end
 
 function CreateSupplySack()

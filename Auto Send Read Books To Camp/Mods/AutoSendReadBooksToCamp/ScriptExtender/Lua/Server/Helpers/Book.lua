@@ -13,7 +13,8 @@ function GetBookInInventory(character, shallow)
   local matchedItems = {}
 
   for _, item in ipairs(inventory) do
-    local itemObject = item.TemplateName .. item.Guid
+    -- god I wish there was a better way to do this
+    local itemObject = item.TemplateName .. "_" .. item.Guid
     if IsBook(itemObject) then
       table.insert(matchedItems, itemObject)
     end

@@ -4,7 +4,7 @@ local function SubscribeToEvents()
 
     Ext.Osiris.RegisterListener("LevelGameplayStarted", 2, "before", EHandlers.OnLevelGameplayStarted)
 
-    if JsonConfig.FEATURES.send_existing_Book.enabled then
+    if JsonConfig.FEATURES.send_books then
       Ext.Osiris.RegisterListener("TeleportedToCamp", 1, "before", EHandlers.OnTeleportedToCamp)
     end
   end

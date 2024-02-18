@@ -20,79 +20,42 @@ BookDelivery.retainlist = {
 }
 
 -- Don't move items that are in the retainlist according to settings
-function BookDelivery.IsBookItemRetainlisted(BookItem)
-  local BookItemGuid = Utils.GetUID(BookItem)
-  if BookItemGuid == nil then
-    Utils.DebugPrint(1, "[ERROR] Couldn't verify if item is retainlisted. BookItemGuid is nil.")
+function BookDelivery.IsBookItemRetainlisted(bookItem)
+  local bookItemGuid = Utils.GetUID(bookItem)
+  if bookItemGuid == nil then
+    Utils.DebugPrint(1, "[ERROR] Couldn't verify if item is retainlisted. bookItemGuid is nil.")
     return false
   end
 
-  local isQuestItem = BookDelivery.retainlist.quests[BookItemGuid]
-  local isHealingItem = BookDelivery.retainlist.healing[BookItemGuid]
-  local isWeapon = BookDelivery.retainlist.weapons[BookItemGuid]
-  -- local isWeapon = Osi.IsWeapon(BookItemGuid) == 1
+  local isQuestItem = IsProbablyQuestItem(bookItem)
 
   if isQuestItem then
-    Utils.DebugPrint(2, "Moved item is a quest item. Not trying to send to chest.")
+    Utils.DebugPrint(2, "Item is a quest/story item. Not trying to send to chest.")
     return true
   else
-    Utils.DebugPrint(2, "Moved item is not a quest item. May try to send to chest.")
-  end
-
-  if isHealingItem then
-    if JsonConfig.FEATURES.ignore.healing then
-      Utils.DebugPrint(2, "Moved item is a healing item. Not trying to send to chest.")
-      return true
-    else
-      Utils.DebugPrint(2, "Moved item is a healing item, but ignore.healing is set to false. May try to send to chest.")
-      return false
-    end
-  end
-
-  if isWeapon then
-    if JsonConfig.FEATURES.ignore.weapons then
-      Utils.DebugPrint(2, "Moved item is a weapon. Not trying to send to chest.")
-      return true
-    else
-      Utils.DebugPrint(2, "Moved item is a weapon, but ignore.weapons is set to false. Trying to send to chest.")
-      return false
-    end
+    Utils.DebugPrint(2, "Item is not a quest/story item. May try to send to chest.")
   end
 
   return false
 end
 
-function BookDelivery.UpdateIgnoredItem(item, reason)
-  BookDelivery.ignore_item.item = item
-  BookDelivery.ignore_item.reason = reason
-end
-
 function BookDelivery.MoveToCampChest(item)
-  Utils.DebugPrint(2, tostring(BookDelivery.ignore_item.item) .. " " .. tostring(BookDelivery.ignore_item.reason))
-  if (BookDelivery.ignore_item.item == item) then
-    Utils.DebugPrint(2, "Ignoring item: " .. item .. "reason: " .. BookDelivery.ignore_item.reason)
-    BookDelivery.ignore_item.item = nil
-    return
-  else
-    if not BookDelivery.IsBookItemRetainlisted(item) then
-      Utils.DebugPrint(1, "Moving " .. item .. " to camp chest.")
-      return Osi.SendToCampChest(item, Osi.GetHostCharacter())
-    end
+  if not BookDelivery.IsBookItemRetainlisted(item) then
+    Utils.DebugPrint(1, "Moving " .. item .. " to camp chest.")
+    return Osi.SendToCampChest(item, Osi.GetHostCharacter())
   end
 end
 
 function BookDelivery.SendInventoryBookToChest(character)
   -- local campChestSack = GetCampChestSupplySack()
-  -- Not sure if nil is falsey in Lua, so we'll just be explicit
-  local shallow = not JsonConfig.FEATURES.send_existing_Book.nested_containers or false
+  local shallow = not JsonConfig.FEATURES.nested_containers
 
   local Book = GetBookInInventory(character, shallow)
   if Book ~= nil then
     for _, item in ipairs(Book) do
       Utils.DebugPrint(2, "Found Book in " .. character .. "'s inventory: " .. item)
       if not BookDelivery.IsBookItemRetainlisted(item) then
-        -- BookDelivery.DeliverBook(item, character, campChestSack)
-        return Osi.SendToCampChest(item, Osi.GetHostCharacter())
+        BookDelivery.DeliverBook(item, character)
       end
     end
   end
@@ -107,7 +70,7 @@ function BookDelivery.DeliverBook(object, from, campChestSack)
   local bookID = Osi.GetBookID(object)
   if FMBRVars.readBooks[bookID] then
     Utils.DebugPrint(1, "Book " .. object .. " has been read. Sending to camp chest.")
-    BookDelivery.SendInventoryBookToChest(object)
+    BookDelivery.MoveToCampChest(object)
   else
     Utils.DebugPrint(2, "Book " .. object .. " has not been read. Not sending to camp chest.")
     return

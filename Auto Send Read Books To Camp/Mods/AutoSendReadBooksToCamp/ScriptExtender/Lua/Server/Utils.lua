@@ -26,7 +26,7 @@ end
 ---@return string
 function Utils.GetUID(templateuuid)
   if #templateuuid <= 36 then
-      return templateuuid -- Return the original string if it's too short
+    return templateuuid   -- Return the original string if it's too short
   end
 
   local result = string.sub(templateuuid, 1, -37) -- Remove last 36 characters
@@ -52,6 +52,22 @@ end
 
 function Utils.GetPlayerEntity()
   return Ext.Entity.Get(Osi.GetHostCharacter())
+end
+
+---Check if string contains a substring
+---@param str string the string to check
+---@param substr string the substring
+---@param caseSensitive? boolean
+---@return boolean
+function StringContains(str, substr, caseSensitive)
+  caseSensitive = caseSensitive or false
+  if caseSensitive then
+    return string.find(str, substr, 1, true) ~= nil
+  else
+    str = string.lower(str)
+    substr = string.lower(substr)
+    return string.find(str, substr, 1, true) ~= nil
+  end
 end
 
 return Utils

@@ -204,3 +204,23 @@ end
 function GetCampChestSupplySack()
   return CheckForCampChestSupplySack()
 end
+
+---Check if item is (probably) quest related
+---@param item GUIDSTRING|ItemEntity
+---@return boolean
+function IsProbablyQuestItem(item)
+  _D(item)
+  _D(Osi.IsStoryItem(item))
+  if type(item) == "string" then
+    ---@cast item string
+    return Osi.IsStoryItem(item) == 1 or StringContains(Osi.GetStatString(item), "quest") or
+        StringContains(Template.GetTemplate(item).Name, "quest")
+  elseif type(item) == "userdata" then
+    ---@cast item ItemEntity
+    local uuid = EntityToUuid(item) or NULLUUID
+    return Osi.IsStoryItem(uuid) == 1 or StringContains(item.Data.StatsId, "quest") or
+        StringContains(item.ServerItem.Template.Name, "quest")
+  else
+    return false
+  end
+end
