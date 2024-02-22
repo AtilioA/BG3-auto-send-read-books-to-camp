@@ -8,12 +8,9 @@ Config.defaultConfig = {
         enabled = true, -- Toggle the mod on/off
     },
     FEATURES = {
-        send_books = true,        -- Move existing book in the party's inventory to the camp chest
-        nested_containers = true, -- Move book in nested containers (e.g. backpacks) to the camp chest
-        -- create_supply_sack = true, -- Move book to a supply sack inside the chest. It will be created if it doesn't exist.
+        instantly = false, -- Move books right after reading them (instead of waiting for teleport to camp)
         ignore = {
-            healing = true,  -- Ignore healing items (e.g. Goodberry)
-            weapons = false, -- Ignore weapons (only Salami in the vanilla base game)
+            quest = true,  -- Ignore quest books/items
         }
     },
     DEBUG = {

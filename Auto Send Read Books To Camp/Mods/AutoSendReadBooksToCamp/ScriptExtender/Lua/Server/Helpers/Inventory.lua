@@ -209,12 +209,11 @@ end
 ---@param item GUIDSTRING|ItemEntity
 ---@return boolean
 function IsProbablyQuestItem(item)
-  _D(item)
-  _D(Osi.IsStoryItem(item))
+  Utils.DebugPrint(2, "Checking if item is a quest/story item: " .. item .. " (" .. type(item) .. ")" .. " - " .. Osi.IsStoryItem(item))
   if type(item) == "string" then
     ---@cast item string
     return Osi.IsStoryItem(item) == 1 or StringContains(Osi.GetStatString(item), "quest") or
-        StringContains(Template.GetTemplate(item).Name, "quest")
+        StringContains(item, "quest")
   elseif type(item) == "userdata" then
     ---@cast item ItemEntity
     local uuid = EntityToUuid(item) or NULLUUID
