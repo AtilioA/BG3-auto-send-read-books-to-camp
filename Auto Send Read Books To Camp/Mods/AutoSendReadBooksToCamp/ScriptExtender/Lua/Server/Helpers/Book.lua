@@ -14,6 +14,7 @@ function GetBookInInventory(character, shallow)
 
   for _, item in ipairs(inventory) do
     -- god I wish there was a better way to do this
+    -- EDIT: I hate this, but I hate checking different combinations once again even more, I'm sorry
     local itemObject = item.TemplateName .. "_" .. item.Guid
     if IsBook(itemObject) then
       table.insert(matchedItems, itemObject)

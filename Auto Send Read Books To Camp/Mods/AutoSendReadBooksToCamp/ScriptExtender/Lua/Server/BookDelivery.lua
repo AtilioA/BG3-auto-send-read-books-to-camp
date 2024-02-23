@@ -27,6 +27,12 @@ function BookDelivery.MoveToCampChest(item)
   end
 end
 
+function BookDelivery.SendOwnedBookToChest(character, item)
+  if IsItemInPartyInventory(item) and not BookDelivery.IsBookItemRetainlisted(item) then
+    BookDelivery.DeliverBook(item, character)
+  end
+end
+
 function BookDelivery.SendInventoryBookToChest(character)
   -- local campChestSack = GetCampChestSupplySack()
   local shallow = not JsonConfig.FEATURES.nested_containers
@@ -35,9 +41,7 @@ function BookDelivery.SendInventoryBookToChest(character)
   if Book ~= nil then
     for _, item in ipairs(Book) do
       Utils.DebugPrint(2, "Found Book in " .. character .. "'s inventory: " .. item)
-      if not BookDelivery.IsBookItemRetainlisted(item) then
-        BookDelivery.DeliverBook(item, character)
-      end
+      BookDelivery.SendOwnedBookToChest(character, item)
     end
   end
 end

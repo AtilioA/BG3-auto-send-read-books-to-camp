@@ -164,52 +164,18 @@ function GetInventory(object, primaryOnly, shallow)
   return items
 end
 
-function GetCampChestInventory()
-  local campChest = Osi.DB_Camp_UserCampChest:Get(nil, nil)[1][2]
-  return GetInventory(campChest, true, true)
+function IsItemInPartyInventory(item)
+  local itemEntity = Ext.Entity.Get(item)
+  -- For some reason InPartyInventory is not being set as one would expect 🤔
+  return itemEntity.InventoryMember ~= nil or itemEntity.ServerItem.InPartyInventory == true
 end
 
---- Checks if an inventory contains a supply sack.
----@param inventoryItems any The first
----@return any | nil - The first supply sack object, or nil if not found.
-function TryToGetCampChestSupplyPack(inventoryItems)
-  for _, item in ipairs(inventoryItems) do
-    if item.TemplateId == CAMP_SUPPLY_SACK_TEMPLATE_ID then
-      return item
-    end
-  end
-
-  return nil
-end
-
-function CheckForCampChestSupplySack()
-  return TryToGetCampChestSupplyPack(GetCampChestInventory())
-end
-
-function AddSupplySackToCampChest()
-  local campChest = Osi.DB_Camp_UserCampChest:Get(nil, nil)[1][2]
-  Utils.DebugPrint(1, "Adding supply sack to camp chest: " .. campChest)
-  Osi.TemplateAddTo(CAMP_SUPPLY_SACK_TEMPLATE_ID, campChest, 1)
-end
-
-function AddSupplySackToCampChestIfMissing()
-  if CheckForCampChestSupplySack() ~= nil then
-    Utils.DebugPrint(3, "Supply sack found in camp chest.")
-  else
-    Utils.DebugPrint(3, "Supply sack not found in camp chest. Creating one.")
-    AddSupplySackToCampChest()
-  end
-end
-
-function GetCampChestSupplySack()
-  return CheckForCampChestSupplySack()
-end
-
----Check if item is (probably) quest related
+---Check if item is (probably) quest related. Adapted from Fararagi (this was from the Auto Sell Loot mod though, not Mark Book as Read)
 ---@param item GUIDSTRING|ItemEntity
 ---@return boolean
 function IsProbablyQuestItem(item)
-  Utils.DebugPrint(2, "Checking if item is a quest/story item: " .. item .. " (" .. type(item) .. ")" .. " - " .. Osi.IsStoryItem(item))
+  Utils.DebugPrint(2,
+    "Checking if item is a quest/story item: " .. item .. " (" .. type(item) .. ")" .. " - " .. Osi.IsStoryItem(item))
   if type(item) == "string" then
     ---@cast item string
     return Osi.IsStoryItem(item) == 1 or StringContains(Osi.GetStatString(item), "quest") or

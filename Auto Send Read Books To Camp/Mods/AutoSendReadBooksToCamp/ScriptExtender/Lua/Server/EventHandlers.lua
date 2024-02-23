@@ -11,7 +11,7 @@ end
 
 function EHandlers.OnGameBookInterfaceClosed(item, character)
   Utils.DebugPrint(2, "GameBookInterfaceClosed event triggered.")
-  BookDelivery.DeliverBook(item)
+  BookDelivery.SendOwnedBookToChest(character, item)
 end
 
 return EHandlers

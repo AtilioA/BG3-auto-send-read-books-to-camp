@@ -54,7 +54,7 @@ function Utils.GetPlayerEntity()
   return Ext.Entity.Get(Osi.GetHostCharacter())
 end
 
----Check if string contains a substring
+---Check if string contains a substring (Courtesy of Fararagi although fr I was just lazy)
 ---@param str string the string to check
 ---@param substr string the substring
 ---@param caseSensitive? boolean
