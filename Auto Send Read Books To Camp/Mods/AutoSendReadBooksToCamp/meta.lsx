@@ -9,10 +9,9 @@
             <node id="ModuleShortDesc">
               <attribute id="Folder" type="LSWString" value="Fallen_Mark_As_Read" />
               <attribute id="MD5" type="LSString" value="" />
-              <attribute id="MD5" type="LSString" value="" />
               <attribute id="Name" type="FixedString" value="Mark Book As Read" />
               <attribute id="UUID" type="FixedString" value="c72d9f6a-a6e4-48b1-98c0-0ecdc7c31cf7" />
-              <attribute id="Version64" type="int64" value="36451018073964544" />
+              <attribute id="Version64" type="int64" value="36169534507319296" />
             </node>
           </children>
         </node>
