@@ -2,16 +2,19 @@ BookDelivery = {}
 
 -- Don't move items that are in the retainlist according to settings
 function BookDelivery.IsBookItemRetainlisted(bookItem)
-  local bookItemGuid = Utils.GetUID(bookItem)
-  if bookItemGuid == nil then
+  if bookItem == nil then
     Utils.DebugPrint(1, "[ERROR] Couldn't verify if item is retainlisted. bookItemGuid is nil.")
     return false
   end
 
   local isQuestItem = IsProbablyQuestItem(bookItem)
+  local isMarkedAsWare = Ware.IsWare(bookItem)
 
   if JsonConfig.FEATURES.ignore.quest and isQuestItem then
     Utils.DebugPrint(2, "Item is a quest/story item. Not trying to send to chest.")
+    return true
+  elseif JsonConfig.FEATURES.ignore.wares and isMarkedAsWare then
+    Utils.DebugPrint(2, "Item is marked as ware. Not trying to send to chest.")
     return true
   else
     Utils.DebugPrint(2, "Item is not a quest/story item. May try to send to chest.")
@@ -20,7 +23,7 @@ function BookDelivery.IsBookItemRetainlisted(bookItem)
   return false
 end
 
-function BookDelivery.MoveToCampChest(item)
+function BookDelivery.ProcessBook(item)
   if not BookDelivery.IsBookItemRetainlisted(item) then
     Utils.DebugPrint(1, "Moving " .. item .. " to camp chest.")
     return Osi.SendToCampChest(item, Osi.GetHostCharacter())
@@ -49,14 +52,12 @@ end
 --- Send Book to camp chest or supply sack.
 ---@param object any The item to deliver.
 ---@param from any The inventory to deliver from.
----@param campChestSack any The supply sack to deliver to.
-function BookDelivery.DeliverBook(object, from, campChestSack)
-  -- If object is in
+function BookDelivery.DeliverBook(object, from)
   local bookID = Osi.GetBookID(object)
   if FMBRVars then
     if FMBRVars.readBooks[bookID] then
       Utils.DebugPrint(1, "Book " .. object .. " has been read. Sending to camp chest.")
-      BookDelivery.MoveToCampChest(object)
+      BookDelivery.ProcessBook(object)
     else
       Utils.DebugPrint(2, "Book " .. object .. " has not been read. Not sending to camp chest.")
       return

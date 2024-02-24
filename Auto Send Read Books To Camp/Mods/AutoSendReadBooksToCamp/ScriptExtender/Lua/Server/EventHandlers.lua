@@ -18,8 +18,15 @@ function EHandlers.OnTimerFinished(timer)
 end
 
 function EHandlers.OnGameBookInterfaceClosed(item, character)
-  Utils.DebugPrint(2, "GameBookInterfaceClosed event triggered.")
-  BookDelivery.SendOwnedBookToChest(character, item)
+  Utils.DebugPrint(2, "GameBookInterfaceClosed event triggered: " .. item .. " by " .. character)
+  if JsonConfig.FEATURES.instantly.enabled then
+    BookDelivery.SendOwnedBookToChest(character, item)
+  elseif JsonConfig.FEATURES.instantly.mark_as_ware_instead.enabled then
+    -- if JsonConfig.FEATURES.instantly.mark_as_ware_instead.only_duplicates then
+    --   Utils.DebugPrint(2, "[NOT IMPLEMENTED] Checking if " .. item .. " is a duplicate.")
+    -- end
+    Ware.MarkAsWare(item)
+  end
 end
 
 function EHandlers.TryToLoadFallenVars()
@@ -28,7 +35,7 @@ function EHandlers.TryToLoadFallenVars()
     Utils.DebugPrint(2, "MarkBookAsRead has been loaded successfully.")
   else
     _D("[Auto Send Read Books To Camp][ERROR]: MarkBookAsRead mod is not loaded, mayhem will ensue.")
--- Probably unnecessary, but just in case
+    -- Probably unnecessary, but just in case
     Osi.TimerLaunch("FMBR_LoadTimer", 5000)
   end
 end
