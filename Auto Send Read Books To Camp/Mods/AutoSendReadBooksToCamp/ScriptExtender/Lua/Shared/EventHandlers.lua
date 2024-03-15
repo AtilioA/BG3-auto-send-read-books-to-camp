@@ -1,5 +1,3 @@
-Ext.Require("Server/Helpers/Book.lua")
-
 EHandlers = {}
 
 FALLENS_MARK_BOOK_AS_READ = "c72d9f6a-a6e4-48b1-98c0-0ecdc7c31cf7"
@@ -25,7 +23,7 @@ function EHandlers.OnGameBookInterfaceClosed(item, character)
     -- if Config:getCfg().FEATURES.instantly.mark_as_ware_instead.only_duplicates then
     --   ASRBTCPrint(2, "[NOT IMPLEMENTED] Checking if " .. item .. " is a duplicate.")
     -- end
-    Ware.MarkAsWare(item)
+    Helpers.Ware:MarkAsWare(item)
   end
 end
 

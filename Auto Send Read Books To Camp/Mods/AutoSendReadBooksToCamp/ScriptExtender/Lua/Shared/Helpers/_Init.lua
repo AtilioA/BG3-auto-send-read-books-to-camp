@@ -1,4 +1,4 @@
-RequireFiles("Server/Helpers/", {
+RequireFiles("Shared/Helpers/", {
   "Config",
   "Printer",
   "BookDelivery",

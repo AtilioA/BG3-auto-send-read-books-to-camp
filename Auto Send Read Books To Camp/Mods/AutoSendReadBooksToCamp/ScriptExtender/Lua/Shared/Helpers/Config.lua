@@ -31,8 +31,3 @@ Config:AddConfigReloadedCallback(function(configInstance)
     ASRBTCPrint(0, "Config reloaded: " .. Ext.Json.Stringify(configInstance:getCfg(), { Beautify = true }))
 end)
 Config:RegisterReloadConfigCommand("asrbtc")
-
-
-Config = {}
-
-Config.configFilePath = ".json"

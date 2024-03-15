@@ -8,7 +8,8 @@ function BookDelivery.IsBookItemRetainlisted(bookItem)
   end
 
   ASRBTCPrint(2,
-    "Checking if item is a quest/story item: " .. item .. " (" .. type(item) .. ")" .. " - " .. Osi.IsStoryItem(item))
+    "Checking if item is a quest/story item: " ..
+    bookItem .. " (" .. type(bookItem) .. ")" .. " - " .. Osi.IsStoryItem(bookItem))
   local isQuestItem = Helpers.Inventory:IsProbablyQuestItem(bookItem)
   local isMarkedAsWare = Helpers.Ware:IsWare(bookItem)
 

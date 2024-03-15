@@ -20,13 +20,6 @@ if (not Ext.Mod.IsModLoaded(VCModuleUUID)) then
     Ext.Utils.Print("VOLITION CABINET HAS NOT BEEN LOADED. PLEASE MAKE SURE IT IS ENABLED IN YOUR MOD MANAGER.")
 end
 
-Ext.Require("Server/Utils.lua")
-Ext.Require("Server/Helpers/Ware.lua")
-Ext.Require("Server/Helpers/Inventory.lua")
-Ext.Require("Server/Config.lua")
-Ext.Require("Server/BookDelivery.lua")
-Ext.Require("Server/EventHandlers.lua")
-
 local MODVERSION = Ext.Mod.GetMod(ModuleUUID).Info.ModVersion
 
 if MODVERSION == nil then
