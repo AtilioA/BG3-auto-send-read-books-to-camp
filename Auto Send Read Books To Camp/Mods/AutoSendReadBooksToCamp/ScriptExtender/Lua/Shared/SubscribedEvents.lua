@@ -5,14 +5,16 @@ function SubscribedEvents.SubscribeToEvents()
     ASRBTCPrint(2,
       "Subscribing to events with JSON config: " .. Ext.Json.Stringify(Config:getCfg(), { Beautify = true }))
 
+    -- Load Fallen vars when game is loaded
     Ext.Osiris.RegisterListener("LevelGameplayStarted", 2, "before", EHandlers.OnLevelGameplayStarted)
     Ext.Osiris.RegisterListener("TimerFinished", 1, "after", EHandlers.OnTimerFinished)
 
+    -- Keep Fallen vars loaded after a reset
+    Ext.Events.ResetCompleted:Subscribe(EHandlers.TryToLoadFallenVars)
+
     Ext.Osiris.RegisterListener("TeleportedToCamp", 1, "before", EHandlers.OnTeleportedToCamp)
 
-    if Config:getCfg().FEATURES.instantly.enabled or Config:getCfg().FEATURES.instantly.mark_as_ware_instead.enabled then
-      Ext.Osiris.RegisterListener("GameBookInterfaceClosed", 2, "after", EHandlers.OnGameBookInterfaceClosed)
-    end
+    Ext.Osiris.RegisterListener("GameBookInterfaceClosed", 2, "after", EHandlers.OnGameBookInterfaceClosed)
   end
 end
 
