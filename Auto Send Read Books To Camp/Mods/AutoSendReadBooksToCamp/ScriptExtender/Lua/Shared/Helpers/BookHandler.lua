@@ -1,7 +1,7 @@
-BookDelivery = {}
+BookHandler = {}
 
 -- Don't move items that are in the retainlist according to settings
-function BookDelivery.IsBookItemRetainlisted(bookItem)
+function BookHandler.IsBookItemRetainlisted(bookItem)
   if bookItem == nil then
     ASRBTCPrint(1, "[ERROR] Couldn't verify if item is retainlisted. bookItemGuid is nil.")
     return false
@@ -26,28 +26,45 @@ function BookDelivery.IsBookItemRetainlisted(bookItem)
   return false
 end
 
-function BookDelivery.ProcessBook(item)
-  if not BookDelivery.IsBookItemRetainlisted(item) then
+function BookHandler.ProcessBook(item)
+  if not BookHandler.IsBookItemRetainlisted(item) then
     ASRBTCPrint(1, "Moving " .. item .. " to camp chest.")
     return Osi.SendToCampChest(item, Osi.GetHostCharacter())
   end
 end
 
-function BookDelivery.SendOwnedBookToChest(character, item)
-  if Helpers.Inventory:IsItemInPartyInventory(item) and not BookDelivery.IsBookItemRetainlisted(item) then
-    BookDelivery.DeliverBook(item, character)
+function BookHandler.SendOwnedBookToChest(character, item)
+  if Helpers.Inventory:IsItemInPartyInventory(item) and not BookHandler.IsBookItemRetainlisted(item) then
+    BookHandler.DeliverBook(item, character)
   end
 end
 
-function BookDelivery.SendInventoryBookToChest(character)
+function BookHandler.SendInventoryBookToChest(character)
   -- local campChestSack = GetCampChestSupplySack()
   local shallow = not Config:getCfg().FEATURES.nested_containers
 
   local Book = Helpers.Book:GetBookInInventory(character, shallow)
   if Book ~= nil then
     for _, item in ipairs(Book) do
-      ASRBTCPrint(2, "Found Book in " .. character .. "'s inventory: " .. item)
-      BookDelivery.SendOwnedBookToChest(character, item)
+      ASRBTCPrint(2, "Found book in " .. character .. "'s inventory: " .. item)
+      BookHandler.SendOwnedBookToChest(character, item)
+    end
+  end
+end
+
+function BookHandler.MarkInventoryBookAsWare(character)
+  -- local campChestSack = GetCampChestSupplySack()
+  local shallow = not Config:getCfg().FEATURES.nested_containers
+
+  local Book = Helpers.Book:GetBookInInventory(character, shallow)
+  if Book ~= nil then
+    for _, item in ipairs(Book) do
+      ASRBTCPrint(2, "Found book in " .. character .. "'s inventory: " .. item)
+      if Config:getCfg().FEATURES.mark_as_ware_instead.only_duplicates and not Helpers.Inventory:IsItemInCampChest(item) then
+        ASRBTCPrint(2, "Item is not a duplicate. Not marking as ware.")
+        return
+      end
+      Helpers.Ware:MarkAsWare(item)
     end
   end
 end
@@ -55,12 +72,12 @@ end
 --- Send Book to camp chest or supply sack.
 ---@param object any The item to deliver.
 ---@param from any The inventory to deliver from.
-function BookDelivery.DeliverBook(object, from)
+function BookHandler.DeliverBook(object, from)
   local bookID = Osi.GetBookID(object)
   if FMBRVars then
     if FMBRVars.readBooks[bookID] then
       ASRBTCPrint(1, "Book " .. object .. " has been read. Sending to camp chest.")
-      BookDelivery.ProcessBook(object)
+      BookHandler.ProcessBook(object)
     else
       ASRBTCPrint(2, "Book " .. object .. " has not been read. Not sending to camp chest.")
       return
@@ -71,4 +88,4 @@ function BookDelivery.DeliverBook(object, from)
   end
 end
 
-return BookDelivery
+return BookHandler
