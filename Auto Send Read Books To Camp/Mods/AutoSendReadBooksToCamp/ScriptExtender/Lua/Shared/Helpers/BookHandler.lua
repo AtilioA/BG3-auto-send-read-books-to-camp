@@ -35,44 +35,44 @@ end
 
 function BookHandler.SendOwnedBookToChest(character, item)
   if Helpers.Inventory:IsItemInPartyInventory(item) and not BookHandler.IsBookItemRetainlisted(item) then
-    BookHandler.DeliverBook(item, character)
+    BookHandler.DeliverBook(item)
   end
 end
 
 function BookHandler.SendInventoryBookToChest(character)
-  -- local campChestSack = GetCampChestSupplySack()
-  local shallow = not Config:getCfg().FEATURES.nested_containers
+  -- NOTE: unused (not present in config options)
+  local shallow = Config:getCfg().FEATURES.ignore.nested
 
-  local Book = Helpers.Book:GetBookInInventory(character, shallow)
-  if Book ~= nil then
-    for _, item in ipairs(Book) do
-      ASRBTCPrint(2, "Found book in " .. character .. "'s inventory: " .. item)
+  local books = Helpers.Book:GetBooksInInventory(character, shallow)
+  if books ~= nil then
+    for _, item in ipairs(books) do
+      ASRBTCPrint(2, "Found book in " .. Helpers.Loca:GetDisplayName(character) .. "'s inventory: " .. item)
       BookHandler.SendOwnedBookToChest(character, item)
     end
   end
 end
 
-function BookHandler.MarkInventoryBookAsWare(character)
-  -- local campChestSack = GetCampChestSupplySack()
-  local shallow = not Config:getCfg().FEATURES.nested_containers
+function BookHandler.MarkInventoryBooksAsWare(character)
+  -- NOTE: unused (not present in config options)
+  local shallow = Config:getCfg().FEATURES.ignore.nested
 
-  local Book = Helpers.Book:GetBookInInventory(character, shallow)
-  if Book ~= nil then
-    for _, item in ipairs(Book) do
-      ASRBTCPrint(2, "Found book in " .. character .. "'s inventory: " .. item)
-      if Config:getCfg().FEATURES.mark_as_ware_instead.only_duplicates and not Helpers.Inventory:IsItemInCampChest(item) then
+  local books = Helpers.Book:GetBooksInInventory(character, shallow)
+  if books ~= nil then
+    for _, item in ipairs(books) do
+      ASRBTCPrint(2, "Found book in " .. Helpers.Loca:GetDisplayName(character) .. "'s inventory: " .. item)
+      if not Config:getCfg().FEATURES.mark_as_ware_instead.only_duplicates or (Config:getCfg().FEATURES.mark_as_ware_instead.only_duplicates and Helpers.Inventory:IsItemInCampChest(item)) then
+        Helpers.Ware:MarkAsWare(item)
+        ASRBTCPrint(1, "Item is a duplicate. Marking as ware.")
+      else
         ASRBTCPrint(2, "Item is not a duplicate. Not marking as ware.")
-        return
       end
-      Helpers.Ware:MarkAsWare(item)
     end
   end
 end
 
---- Send Book to camp chest or supply sack.
+--- Send book to camp chest
 ---@param object any The item to deliver.
----@param from any The inventory to deliver from.
-function BookHandler.DeliverBook(object, from)
+function BookHandler.DeliverBook(object)
   local bookID = Osi.GetBookID(object)
   if FMBRVars then
     if FMBRVars.readBooks[bookID] then
@@ -83,7 +83,7 @@ function BookHandler.DeliverBook(object, from)
       return
     end
   else
-    ASRBTCPrint(0, "MarkBookAsRead mod is not loaded. Not sending to camp chest.")
+    ASRBTCWarn(0, "'MarkBookAsRead' mod is not loaded. Not sending to camp chest.")
     return
   end
 end
