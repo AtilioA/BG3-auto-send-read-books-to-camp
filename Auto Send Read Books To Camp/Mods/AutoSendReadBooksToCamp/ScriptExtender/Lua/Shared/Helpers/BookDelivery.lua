@@ -43,7 +43,7 @@ function BookDelivery.SendInventoryBookToChest(character)
   -- local campChestSack = GetCampChestSupplySack()
   local shallow = not Config:getCfg().FEATURES.nested_containers
 
-  local Book = GetBookInInventory(character, shallow)
+  local Book = Helpers.Book:GetBookInInventory(character, shallow)
   if Book ~= nil then
     for _, item in ipairs(Book) do
       ASRBTCPrint(2, "Found Book in " .. character .. "'s inventory: " .. item)
