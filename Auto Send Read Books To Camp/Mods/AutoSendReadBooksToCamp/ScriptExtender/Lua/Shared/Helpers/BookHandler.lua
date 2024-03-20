@@ -1,6 +1,10 @@
 BookHandler = {}
 
--- Don't move items that are in the retainlist according to settings
+-- add user-defined retainlist?
+
+-- Check if item is in retainlist according to settings
+---@param bookItem string
+---@return boolean
 function BookHandler.IsBookItemRetainlisted(bookItem)
   if bookItem == nil then
     ASRBTCPrint(1, "[ERROR] Couldn't verify if item is retainlisted. bookItemGuid is nil.")
@@ -26,16 +30,44 @@ function BookHandler.IsBookItemRetainlisted(bookItem)
   return false
 end
 
-function BookHandler.ProcessBook(item)
-  if not BookHandler.IsBookItemRetainlisted(item) then
-    ASRBTCPrint(1, "Moving " .. item .. " to camp chest.")
-    return Osi.SendToCampChest(item, Osi.GetHostCharacter())
+--- Check if the item (book) has been read.
+---@param object any The item to check
+function BookHandler.HasBeenRead(object)
+  local bookID = Osi.GetBookID(object)
+
+  if FMBRVars then
+    if FMBRVars.readBooks[bookID] then
+      ASRBTCPrint(1, "Book " .. object .. " has been read and ready for processing.")
+    else
+      ASRBTCPrint(2, "Book " .. object .. " has not been read, should not be processed.")
+      return
+    end
+  else
+    ASRBTCWarn(0, "'MarkBookAsRead' mod is not loaded. Not processing book. Mayhem will ensue.")
+    return
   end
 end
 
+--- Check if the item (book) should be processed: not retainlisted and has been read.
+---@param item any The item to check
+---@return boolean
+function BookHandler.ShouldBeProcessed(item)
+  if BookHandler.IsBookItemRetainlisted(item) then
+    ASRBTCPrint(2, "Item is retainlisted. Not processing.")
+    return false
+  elseif not BookHandler.HasBeenRead(item) then
+    ASRBTCPrint(2, "Item has not been read. Not processing.")
+    return false
+  end
+
+  return true
+end
+
 function BookHandler.SendOwnedBookToChest(character, item)
-  if VCHelpers.Inventory:IsItemInPartyInventory(item) and not BookHandler.IsBookItemRetainlisted(item) then
-    BookHandler.DeliverBook(item)
+  -- FIXME: Check IsItemInPartyInventory
+  _D("Is item in party inventory: " .. VCHelpers.Inventory:IsItemInPartyInventory(item))
+  if VCHelpers.Inventory:IsItemInPartyInventory(item) and BookHandler.ShouldBeProcessed(item) then
+    return Osi.SendToCampChest(item, Osi.GetHostCharacter())
   end
 end
 
@@ -52,39 +84,25 @@ function BookHandler.SendInventoryBookToChest(character)
   end
 end
 
+function BookHandler.MarkOwnedBookAsWare(character, item)
+  if VCHelpers.Inventory:IsItemInPartyInventory(item) and BookHandler.ShouldBeProcessed(item) then
+    if not Config:getCfg().FEATURES.mark_as_ware_instead.only_duplicates or (Config:getCfg().FEATURES.mark_as_ware_instead.only_duplicates and VCHelpers.Inventory:IsItemInCampChest(item)) then
+      VCHelpers.Ware:MarkAsWare(item)
+      ASRBTCPrint(1, "Item is a duplicate. Marking as ware.")
+    else
+      ASRBTCPrint(2, "Item is not a duplicate. Not marking as ware.")
+    end
+  end
+end
+
 function BookHandler.MarkInventoryBooksAsWare(character)
-  -- NOTE: unused (not present in config options)
   local shallow = Config:getCfg().FEATURES.ignore.nested
 
   local books = VCHelpers.Book:GetBooksInInventory(character, shallow)
   if books ~= nil then
     for _, item in ipairs(books) do
-      ASRBTCPrint(2, "Found book in " .. VCHelpers.Loca:GetDisplayName(character) .. "'s inventory: " .. item)
-      if not Config:getCfg().FEATURES.mark_as_ware_instead.only_duplicates or (Config:getCfg().FEATURES.mark_as_ware_instead.only_duplicates and VCHelpers.Inventory:IsItemInCampChest(item)) then
-        VCHelpers.Ware:MarkAsWare(item)
-        ASRBTCPrint(1, "Item is a duplicate. Marking as ware.")
-      else
-        ASRBTCPrint(2, "Item is not a duplicate. Not marking as ware.")
-      end
+      BookHandler.MarkOwnedBookAsWare(character, item)
     end
-  end
-end
-
---- Send book to camp chest
----@param object any The item to deliver.
-function BookHandler.DeliverBook(object)
-  local bookID = Osi.GetBookID(object)
-  if FMBRVars then
-    if FMBRVars.readBooks[bookID] then
-      ASRBTCPrint(1, "Book " .. object .. " has been read. Sending to camp chest.")
-      BookHandler.ProcessBook(object)
-    else
-      ASRBTCPrint(2, "Book " .. object .. " has not been read. Not sending to camp chest.")
-      return
-    end
-  else
-    ASRBTCWarn(0, "'MarkBookAsRead' mod is not loaded. Not sending to camp chest.")
-    return
   end
 end
 
