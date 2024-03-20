@@ -38,13 +38,14 @@ function BookHandler.HasBeenRead(object)
   if FMBRVars then
     if FMBRVars.readBooks[bookID] then
       ASRBTCPrint(1, "Book " .. object .. " has been read and ready for processing.")
+      return true
     else
       ASRBTCPrint(2, "Book " .. object .. " has not been read, should not be processed.")
-      return
+      return false
     end
   else
     ASRBTCWarn(0, "'MarkBookAsRead' mod is not loaded. Not processing book. Mayhem will ensue.")
-    return
+    return false
   end
 end
 
@@ -64,8 +65,6 @@ function BookHandler.ShouldBeProcessed(item)
 end
 
 function BookHandler.SendOwnedBookToChest(character, item)
-  -- FIXME: Check IsItemInPartyInventory
-  _D("Is item in party inventory: " .. VCHelpers.Inventory:IsItemInPartyInventory(item))
   if VCHelpers.Inventory:IsItemInPartyInventory(item) and BookHandler.ShouldBeProcessed(item) then
     return Osi.SendToCampChest(item, Osi.GetHostCharacter())
   end
