@@ -10,8 +10,8 @@ function BookHandler.IsBookItemRetainlisted(bookItem)
   ASRBTCPrint(2,
     "Checking if item is a quest/story item: " ..
     bookItem .. " (" .. type(bookItem) .. ")" .. " - " .. Osi.IsStoryItem(bookItem))
-  local isQuestItem = Helpers.Inventory:IsProbablyQuestItem(bookItem)
-  local isMarkedAsWare = Helpers.Ware:IsWare(bookItem)
+  local isQuestItem = VCHelpers.Inventory:IsProbablyQuestItem(bookItem)
+  local isMarkedAsWare = VCHelpers.Ware:IsWare(bookItem)
 
   if Config:getCfg().FEATURES.ignore.quest and isQuestItem then
     ASRBTCPrint(2, "Item is a quest/story item. Not trying to send to chest.")
@@ -34,7 +34,7 @@ function BookHandler.ProcessBook(item)
 end
 
 function BookHandler.SendOwnedBookToChest(character, item)
-  if Helpers.Inventory:IsItemInPartyInventory(item) and not BookHandler.IsBookItemRetainlisted(item) then
+  if VCHelpers.Inventory:IsItemInPartyInventory(item) and not BookHandler.IsBookItemRetainlisted(item) then
     BookHandler.DeliverBook(item)
   end
 end
@@ -43,10 +43,10 @@ function BookHandler.SendInventoryBookToChest(character)
   -- NOTE: unused (not present in config options)
   local shallow = Config:getCfg().FEATURES.ignore.nested
 
-  local books = Helpers.Book:GetBooksInInventory(character, shallow)
+  local books = VCHelpers.Book:GetBooksInInventory(character, shallow)
   if books ~= nil then
     for _, item in ipairs(books) do
-      ASRBTCPrint(2, "Found book in " .. Helpers.Loca:GetDisplayName(character) .. "'s inventory: " .. item)
+      ASRBTCPrint(2, "Found book in " .. VCHelpers.Loca:GetDisplayName(character) .. "'s inventory: " .. item)
       BookHandler.SendOwnedBookToChest(character, item)
     end
   end
@@ -56,12 +56,12 @@ function BookHandler.MarkInventoryBooksAsWare(character)
   -- NOTE: unused (not present in config options)
   local shallow = Config:getCfg().FEATURES.ignore.nested
 
-  local books = Helpers.Book:GetBooksInInventory(character, shallow)
+  local books = VCHelpers.Book:GetBooksInInventory(character, shallow)
   if books ~= nil then
     for _, item in ipairs(books) do
-      ASRBTCPrint(2, "Found book in " .. Helpers.Loca:GetDisplayName(character) .. "'s inventory: " .. item)
-      if not Config:getCfg().FEATURES.mark_as_ware_instead.only_duplicates or (Config:getCfg().FEATURES.mark_as_ware_instead.only_duplicates and Helpers.Inventory:IsItemInCampChest(item)) then
-        Helpers.Ware:MarkAsWare(item)
+      ASRBTCPrint(2, "Found book in " .. VCHelpers.Loca:GetDisplayName(character) .. "'s inventory: " .. item)
+      if not Config:getCfg().FEATURES.mark_as_ware_instead.only_duplicates or (Config:getCfg().FEATURES.mark_as_ware_instead.only_duplicates and VCHelpers.Inventory:IsItemInCampChest(item)) then
+        VCHelpers.Ware:MarkAsWare(item)
         ASRBTCPrint(1, "Item is a duplicate. Marking as ware.")
       else
         ASRBTCPrint(2, "Item is not a duplicate. Not marking as ware.")

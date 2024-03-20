@@ -6,10 +6,10 @@ FALLENS_MARK_BOOK_AS_READ = "c72d9f6a-a6e4-48b1-98c0-0ecdc7c31cf7"
 function EHandlers.OnTeleportedToCamp(character)
   if Osi.IsInPartyWith(character, Osi.GetHostCharacter()) == 1 then
     if Config:getCfg().FEATURES.mark_as_ware_instead.enabled then
-      ASRBTCPrint(2, "Marking existing books from " .. Helpers.Loca:GetDisplayName(character) .. " as wares")
+      ASRBTCPrint(2, "Marking existing books from " .. VCHelpers.Loca:GetDisplayName(character) .. " as wares")
       BookHandler.MarkInventoryBooksAsWare(character)
     else
-      ASRBTCPrint(2, "Sending existing books from " .. Helpers.Loca:GetDisplayName(character) .. " to camp chest")
+      ASRBTCPrint(2, "Sending existing books from " .. VCHelpers.Loca:GetDisplayName(character) .. " to camp chest")
       BookHandler.SendInventoryBookToChest(character)
     end
   end
@@ -27,11 +27,11 @@ function EHandlers.OnGameBookInterfaceClosed(item, character)
     if not Config:getCfg().FEATURES.mark_as_ware_instead.enabled then
       BookHandler.SendOwnedBookToChest(character, item)
     else
-      if Config:getCfg().FEATURES.mark_as_ware_instead.only_duplicates and not Helpers.Inventory:IsItemInCampChest(item) then
+      if Config:getCfg().FEATURES.mark_as_ware_instead.only_duplicates and not VCHelpers.Inventory:IsItemInCampChest(item) then
         ASRBTCDebug(1, "Item " .. item .. " is not a duplicate, not marking as ware.")
         return
       end
-      Helpers.Ware:MarkAsWare(item)
+      VCHelpers.Ware:MarkAsWare(item)
     end
   end
 end

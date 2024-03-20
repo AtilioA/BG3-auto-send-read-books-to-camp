@@ -1,4 +1,4 @@
-Config = Helpers.Config:New({
+Config = VCHelpers.Config:New({
     folderName = "AutoSendReadBooksToCamp",
     configFilePath = "auto_send_read_books_to_camp_config.json",
     defaultConfig = {
@@ -14,13 +14,13 @@ Config = Helpers.Config:New({
                 only_duplicates = true, -- Only mark duplicate books as wares
             },
             ignore = {
-                quest = true, -- Ignore quest books
-                wares = true, -- Ignore books marked as wares
+                quest = true,  -- Ignore quest books
+                wares = true,  -- Ignore books marked as wares
                 nested = true, -- Ignore books in containers
             },
         },
         DEBUG = {
-            level = 0 -- 0 = no debug, 1 = minimal, 2 = verbose logs
+            level = 0 -- 0 = no debug, 1 = minimal, 2 = verbose debug logs
         }
     }
 })
