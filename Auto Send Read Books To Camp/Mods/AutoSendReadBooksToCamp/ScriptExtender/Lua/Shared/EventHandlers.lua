@@ -27,11 +27,19 @@ function EHandlers.OnGameBookInterfaceClosed(item, character)
     if not Config:getCfg().FEATURES.mark_as_ware_instead.enabled then
       return BookHandler.SendOwnedBookToChest(character, item)
     else
-      if Config:getCfg().FEATURES.mark_as_ware_instead.only_duplicates and not VCHelpers.Inventory:IsItemInCampChest(item) then
-        ASRBTCDebug(1, "Item " .. item .. " is not a duplicate, not marking as ware.")
-        return
+      if Config:getCfg().FEATURES.mark_as_ware_instead.only_duplicates then
+        local isBookDuplicate = VCHelpers.Inventory:IsItemInCampChest(item)
+        if isBookDuplicate then
+          VCHelpers.Ware:MarkAsWare(item)
+          ASRBTCPrint(1, "Book is a duplicate. Marking as ware.")
+        else
+          ASRBTCDebug(1, "Item " .. item .. " is not a duplicate, not marking as ware. Sending to chest.")
+          return BookHandler.SendOwnedBookToChest(character, item)
+        end
+      else
+        VCHelpers.Ware:MarkAsWare(item)
+        ASRBTCPrint(1, "Marking read book as ware.")
       end
-      return VCHelpers.Ware:MarkAsWare(item)
     end
   end
 end
