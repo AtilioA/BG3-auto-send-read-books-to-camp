@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<contentList>
+    <content contentuid="h4beeb2e0f2084ac1a7f9535e3321a4b0f98e" version="1">Ativar mod</content>
+    <content contentuid="hef87dd2805ef439183e2dc5c54c2e2605ef2" version="1">Nível de depuração</content>
+    <content contentuid="h108ba0def5864a1ab6d2d1f089b95450357c" version="1">Mover livros instantaneamente</content>
+    <content contentuid="h9f744c1b51004cd8bf171c72b0129be5f7b8" version="1">Marcar como supérfluo</content>
+    <content contentuid="h4c0f3ce4301b4f7e8ab01d6822a3ecb10e9c" version="1">Marcar apenas duplicatas</content>
+    <content contentuid="hb4d176f1307d4a34aa70b43e63a40135d07c" version="1">Ignorar livros de missões</content>
+    <content contentuid="h47e10f3ea90c4a71823bdc8b00e33ddd87a2" version="1">Ignorar supérfluos</content>
+    <content contentuid="hb8ea5e51ae2741b08e4289662289b4cfdb88" version="1">Ignorar livros em containers</content>
+    <content contentuid="h0378bd5b917a460d9315b02f483af2bdbb99" version="1">Mover livros logo após lê-los (em vez de esperar ir ao acampamento).</content>
+    <content contentuid="h87709fda0f4f4faa9976e1de4fb8a1b2cd41" version="1">0 = sem depuração, 1 = mínima, 2 = logs de depuração detalhados.</content>
+    <content contentuid="h61ac1487dfcf4fb594cb5d6a126106e11b42" version="1">Ativar/desativar o mod sem desinstalá-lo.</content>
+    <content contentuid="hc4b806e776364843a1ef95aa93a8a20d5160" version="1">Marcar livros como supérfluos após lê-los.&lt;br&gt;Será ignorado se 'Mover livros instantaneamente' estiver ativado.</content>
+    <content contentuid="h04a89c80976e4175aafa9bc865e273be3315" version="1">'Livros duplicados' são livros que já estão no baú do acampamento.&lt;br&gt;Livros não duplicados são enviados para o acampamento.</content>
+    <content contentuid="h584ca5c8959f4a68bbdcf086d88c8bfb1g31" version="1">Não mover livros relacionados a missões.</content>
+    <content contentuid="hd33c0c0bb8cf45018564bd6a1c2904e9bbcd" version="1">Não mover livros marcados como supérfluos.</content>
+    <content contentuid="hcb0870c92fab451eae3824d106d7c415da04" version="1">Não mover livros em contêineres.</content>
+    <content contentuid="h452cf5dfec6a4706ae7f2eb6f955e7e9f1d0" version="1">Configurações de supérfluos</content>
+</contentList>

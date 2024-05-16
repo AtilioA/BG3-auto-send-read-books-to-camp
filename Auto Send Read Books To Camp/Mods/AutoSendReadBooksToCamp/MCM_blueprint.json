@@ -1,0 +1,143 @@
+{
+    "SchemaVersion": 1,
+    "Tabs": [
+        {
+            "TabName": "General",
+            "TabId": "general",
+            "Sections": [
+                {
+                    "SectionId": "general_settings",
+                    "SectionName": "General settings",
+                    "Settings": [
+                        {
+                            "Id": "mod_enabled",
+                            "Name": "Enable mod",
+                            "Type": "checkbox",
+                            "Default": true,
+                            "Description": "Toggle the mod on/off without uninstalling it.",
+                            "Tooltip": "Toggle the mod on/off",
+                            "Handles": {
+                                "DescriptionHandle": "h61ac1487dfcf4fb594cb5d6a126106e11b42",
+                                "NameHandle": "h4beeb2e0f2084ac1a7f9535e3321a4b0f98e"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "SectionId": "debugging_settings",
+                    "SectionName": "Debugging",
+                    "Settings": [
+                        {
+                            "Id": "debug_level",
+                            "Name": "Debug level",
+                            "Type": "slider_int",
+                            "Default": 0,
+                            "Description": "0 = no debug, 1 = minimal, 2 = verbose debug logs.",
+                            "Options": {
+                                "Min": 0,
+                                "Max": 2
+                            },
+                            "Handles": {
+                                "DescriptionHandle": "h87709fda0f4f4faa9976e1de4fb8a1b2cd41",
+                                "NameHandle": "hef87dd2805ef439183e2dc5c54c2e2605ef2"
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "TabName": "Features",
+            "TabId": "features",
+            "Sections": [
+                {
+                    "SectionId": "main_settings",
+                    "SectionName": "Main settings",
+                    "Settings": [
+                        {
+                            "Id": "process_instantly",
+                            "Name": "Process books instantly",
+                            "Type": "checkbox",
+                            "Default": false,
+                            "Description": "Process books right after reading them (instead of waiting for teleport to camp).",
+                            "Handles": {
+                                "DescriptionHandle": "h0378bd5b917a460d9315b02f483af2bdbb99",
+                                "NameHandle": "h108ba0def5864a1ab6d2d1f089b95450357c"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "SectionId": "ware_settings",
+                    "SectionName": "Ware settings",
+                    "Settings": [
+                        {
+                            "Id": "mark_as_ware_instead",
+                            "Name": "Mark as ware instead",
+                            "Type": "checkbox",
+                            "Default": true,
+                            "Description": "Mark books as wares after reading them instead of sending to camp.",
+                            "Handles": {
+                                "DescriptionHandle": "hc4b806e776364843a1ef95aa93a8a20d5160",
+                                "NameHandle": "h9f744c1b51004cd8bf171c72b0129be5f7b8"
+                            }
+                        },
+                        {
+                            "Id": "mark_only_duplicates",
+                            "Name": "Mark only duplicates as wares",
+                            "Type": "checkbox",
+                            "Default": true,
+                            "Description": "'Duplicate books' are books that are already in the camp chest.\nNon duplicates are sent to camp.",
+                            "Handles": {
+                                "DescriptionHandle": "h04a89c80976e4175aafa9bc865e273be3315",
+                                "NameHandle": "h4c0f3ce4301b4f7e8ab01d6822a3ecb10e9c"
+                            }
+                        }
+                    ],
+                    "Handles": {
+                        "NameHandle": "h452cf5dfec6a4706ae7f2eb6f955e7e9f1d0"
+                    }
+                },
+                {
+                    "SectionId": "ignore_settings",
+                    "SectionName": "Ignore settings",
+                    "Settings": [
+                        {
+                            "Id": "ignore_quest",
+                            "Name": "Ignore quest books",
+                            "Type": "checkbox",
+                            "Default": true,
+                            "Description": "Don't move quest-related books.",
+                            "Handles": {
+                                "DescriptionHandle": "h584ca5c8959f4a68bbdcf086d88c8bfb1g31",
+                                "NameHandle": "hb4d176f1307d4a34aa70b43e63a40135d07c"
+                            }
+                        },
+                        {
+                            "Id": "ignore_wares",
+                            "Name": "Ignore wares",
+                            "Type": "checkbox",
+                            "Default": true,
+                            "Description": "Don't move books marked as wares.",
+                            "Handles": {
+                                "DescriptionHandle": "hd33c0c0bb8cf45018564bd6a1c2904e9bbcd",
+                                "NameHandle": "h47e10f3ea90c4a71823bdc8b00e33ddd87a2"
+                            }
+                        },
+                        {
+                            "Id": "ignore_nested",
+                            "Name": "Ignore nested books",
+                            "Type": "checkbox",
+                            "Default": true,
+                            "Description": "Don't move books in containers.",
+                            "Handles": {
+                                "DescriptionHandle": "hcb0870c92fab451eae3824d106d7c415da04",
+                                "NameHandle": "hb8ea5e51ae2741b08e4289662289b4cfdb88"
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

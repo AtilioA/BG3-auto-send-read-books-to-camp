@@ -1,21 +1,30 @@
 SubscribedEvents = {}
 
 function SubscribedEvents.SubscribeToEvents()
-  if Config:getCfg().GENERAL.enabled then
-    ASRBTCPrint(2,
-      "Subscribing to events with JSON config: " .. Ext.Json.Stringify(Config:getCfg(), { Beautify = true }))
+    local function conditionalWrapper(handler)
+        return function(...)
+            if MCMGet("mod_enabled") then
+                handler(...)
+            else
+                ASRBTCDebug(1, "Event handling is disabled.")
+            end
+        end
+    end
+
+    ASRBTCDebug(2,
+        "Subscribing to events with JSON config: " ..
+        Ext.Json.Stringify(Mods.BG3MCM.MCMAPI:GetAllModSettings(ModuleUUID), { Beautify = true }))
 
     -- Load Fallen vars when game is loaded
-    Ext.Osiris.RegisterListener("LevelGameplayStarted", 2, "before", EHandlers.OnLevelGameplayStarted)
-    Ext.Osiris.RegisterListener("TimerFinished", 1, "after", EHandlers.OnTimerFinished)
+    Ext.Osiris.RegisterListener("LevelGameplayStarted", 2, "before", conditionalWrapper(EHandlers.OnLevelGameplayStarted))
+    -- Ext.Osiris.RegisterListener("TimerFinished", 1, "after", conditionalWrapper(EHandlers.OnTimerFinished))
 
     -- Keep Fallen vars loaded after a reset
-    Ext.Events.ResetCompleted:Subscribe(EHandlers.TryToLoadFallenVars)
+    Ext.Events.ResetCompleted:Subscribe(conditionalWrapper(EHandlers.TryToLoadFallenVars))
 
-    Ext.Osiris.RegisterListener("TeleportedToCamp", 1, "before", EHandlers.OnTeleportedToCamp)
+    Ext.Osiris.RegisterListener("TeleportedToCamp", 1, "before", conditionalWrapper(EHandlers.OnTeleportedToCamp))
 
-    Ext.Osiris.RegisterListener("GameBookInterfaceClosed", 2, "after", EHandlers.OnGameBookInterfaceClosed)
-  end
+    Ext.Osiris.RegisterListener("GameBookInterfaceClosed", 2, "after", conditionalWrapper(EHandlers.OnGameBookInterfaceClosed))
 end
 
 return SubscribedEvents
