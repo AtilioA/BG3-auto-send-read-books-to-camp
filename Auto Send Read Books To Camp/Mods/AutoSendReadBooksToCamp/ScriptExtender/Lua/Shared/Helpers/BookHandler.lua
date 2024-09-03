@@ -11,7 +11,7 @@ function BookHandler.IsBookItemRetainlisted(bookItem)
         return false
     end
 
-    ASRBTCPrint(2,
+    ASRBTCDebug(2,
         "Checking if item is a quest/story item: " ..
         bookItem .. " (" .. type(bookItem) .. ")" .. " - " .. Osi.IsStoryItem(bookItem))
     local isQuestItem = VCHelpers.Inventory:IsProbablyQuestItem(bookItem)
@@ -68,6 +68,7 @@ function BookHandler.SendBookToChest(character, item)
     return Osi.SendToCampChest(item, Osi.GetHostCharacter())
 end
 
+---@param character GUIDSTRING
 function BookHandler.ProcessInventoryBooks(character)
     local shallow = MCMGet("ignore_nested")
     local books = VCHelpers.Book:GetBooksInInventory(character, shallow)
@@ -80,25 +81,33 @@ function BookHandler.ProcessInventoryBooks(character)
     end
 end
 
+---@param character GUIDSTRING
+---@param item EntityHandle
 function BookHandler.ProcessBook(character, item)
     if VCHelpers.Inventory:IsItemInPartyInventory(item) and BookHandler.ShouldBeProcessed(item) then
-        if MCMGet("mark_as_ware_instead") then
-            BookHandler.MarkBookAsWare(character, item)
-        else
-            BookHandler.SendBookToChest(character, item)
-        end
+        BookHandler.ProcessPotentialMarkAsWare(character, item)
     end
 end
 
-function BookHandler.MarkBookAsWare(character, item)
-    if not MCMGet('mark_only_duplicates') then
+---@param character GUIDSTRING
+---@param item EntityHandle
+function BookHandler.ProcessPotentialMarkAsWare(character, item)
+    local markAllAsWare = not MCMGet('mark_only_duplicates')
+    local isDuplicate = VCHelpers.Inventory:IsItemInCampChest(item) ~= nil
+    local markAsWareInstead = MCMGet('mark_as_ware_instead')
+
+    if markAsWareInstead and (markAllAsWare or isDuplicate) then
         VCHelpers.Ware:MarkAsWare(item)
-        ASRBTCPrint(1, "Marking as ware without checking for duplicates.")
-    elseif MCMGet('mark_only_duplicates') and VCHelpers.Inventory:IsItemInCampChest(item) then
-        VCHelpers.Ware:MarkAsWare(item)
-        ASRBTCPrint(1, "Book is a duplicate. Marking as ware.")
+        if markAllAsWare then
+            ASRBTCTest(1, "Marking as ware without checking for duplicates.")
+        elseif isDuplicate then
+            ASRBTCTest(1, "Book is a duplicate. Marking as ware.")
+        else
+            ASRBTCTest(1, "Book is not a duplicate; marking it as ware instead of sending to chest.")
+        end
     else
-        ASRBTCPrint(2, "Book is not a duplicate. Not marking as ware.")
+        ASRBTCPrint(2, "Book is not a duplicate; sending it to chest.")
+        BookHandler.SendBookToChest(character, item)
     end
 end
 
