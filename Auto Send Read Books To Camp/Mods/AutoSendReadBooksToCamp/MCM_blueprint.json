@@ -41,6 +41,22 @@
                                 "DescriptionHandle": "h87709fda0f4f4faa9976e1de4fb8a1b2cd41",
                                 "NameHandle": "hef87dd2805ef439183e2dc5c54c2e2605ef2"
                             }
+                        },
+                        {
+                            "Id": "process_now",
+                            "Name": "Process now",
+                            "Type": "checkbox",
+                            "Description": "Process all books in the player's inventory.\nThis is just a checkbox that acts as a button.",
+                            "Default": false,
+                            "VisibleIf": {
+                                "Conditions": [
+                                    {
+                                        "SettingId": "debug_level",
+                                        "Operator": ">",
+                                        "ExpectedValue": "0"
+                                    }
+                                ]
+                            }
                         }
                     ]
                 }

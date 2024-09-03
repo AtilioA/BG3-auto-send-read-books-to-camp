@@ -25,6 +25,8 @@ function SubscribedEvents.SubscribeToEvents()
     Ext.Osiris.RegisterListener("TeleportedToCamp", 1, "before", conditionalWrapper(EHandlers.OnTeleportedToCamp))
 
     Ext.Osiris.RegisterListener("GameBookInterfaceClosed", 2, "after", conditionalWrapper(EHandlers.OnGameBookInterfaceClosed))
+
+    Ext.ModEvents.BG3MCM['MCM_Setting_Saved']:Subscribe(conditionalWrapper(EHandlers.OnMCMSettingSaved))
 end
 
 return SubscribedEvents
