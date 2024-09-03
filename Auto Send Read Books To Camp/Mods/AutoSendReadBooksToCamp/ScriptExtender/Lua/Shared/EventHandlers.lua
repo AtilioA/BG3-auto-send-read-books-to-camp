@@ -1,5 +1,6 @@
 EHandlers = {}
 
+---@param character GUIDSTRING
 function EHandlers.OnTeleportedToCamp(character)
     if Osi.IsInPartyWith(character, Osi.GetHostCharacter()) == 1 then
         BookHandler.ProcessInventoryBooks(character)
@@ -10,6 +11,11 @@ function EHandlers.OnGameBookInterfaceClosed(item, character)
     ASRBTCPrint(2, "GameBookInterfaceClosed event triggered: " .. item .. " by " .. character)
 
     if not MCMGet("process_instantly") then
+        return
+    end
+
+    if BookHandler.IsBookItemRetainlisted(item) then
+        ASRBTCPrint(2, "Item is retainlisted. Not processing.")
         return
     end
 
@@ -54,6 +60,12 @@ end
 
 function EHandlers.OnLevelGameplayStarted()
     EHandlers.TryToLoadFallenVars()
+end
+
+function EHandlers.OnMCMSettingSaved(payload)
+    if payload.modUUID == ModuleUUID and payload.settingId == "process_now" then
+        BookHandler.ProcessInventoryBooks(Osi.GetHostCharacter())
+    end
 end
 
 return EHandlers
