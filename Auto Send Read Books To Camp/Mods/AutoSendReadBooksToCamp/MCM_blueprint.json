@@ -100,13 +100,22 @@
                         },
                         {
                             "Id": "mark_only_duplicates",
-                            "Name": "Mark only duplicates as wares",
+                            "Name": "Only mark duplicates as wares",
                             "Type": "checkbox",
                             "Default": true,
                             "Description": "'Duplicate books' are books that are already in the camp chest.\nNon duplicates are sent to camp.",
                             "Handles": {
                                 "DescriptionHandle": "h04a89c80976e4175aafa9bc865e273be3315",
                                 "NameHandle": "h4c0f3ce4301b4f7e8ab01d6822a3ecb10e9c"
+                            },
+                            "VisibleIf": {
+                                "Conditions": [
+                                    {
+                                        "SettingId": "mark_as_ware_instead",
+                                        "Operator": "==",
+                                        "ExpectedValue": "true"
+                                    }
+                                ]
                             }
                         }
                     ],
