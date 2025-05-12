@@ -17,4 +17,14 @@
     <content contentuid="hd33c0c0bb8cf45018564bd6a1c2904e9bbcd" version="1">Não mover livros marcados como supérfluos.</content>
     <content contentuid="hcb0870c92fab451eae3824d106d7c415da04" version="1">Não mover livros em contêineres.</content>
     <content contentuid="h452cf5dfec6a4706ae7f2eb6f955e7e9f1d0" version="1">Configurações de supérfluos</content>
+    <content contentuid="ha827115e4bd649e29254c8bdbb14e88b4eag" version="1">Auto Send Books To Camp</content>
+    <content contentuid="h10f8c874e2c4429581d5924367e68a0857f8" version="1">Automatically sends read books to the camp chest or marks them as wares.</content>
+    <content contentuid="h182ce47071ad418ba37b67a9fc8e332e925b" version="1">General</content>
+    <content contentuid="h3ed9140ed1434f0f8539fc94f853c9e1dg24" version="1">General settings</content>
+    <content contentuid="hce5e8f8da2884d0caf18eba26edaa8a51fa9" version="1">Debugging</content>
+    <content contentuid="hcf053f33c1e04030a2c1c2b169c9a4fbe875" version="1">Process now</content>
+    <content contentuid="h016fc91033ab4091b8b3705f231b475580d7" version="1">Process all books in the player's inventory.\nThis is just a checkbox that acts as a button.</content>
+    <content contentuid="h329d4d13b1ce4467b0c8e8cd6b761bf1208e" version="1">Features</content>
+    <content contentuid="h79dc307185ca4bf5b88da99be50049a65bb4" version="1">Main settings</content>
+    <content contentuid="hbff00d1f55504329b5c27e6219b48f82d33a" version="1">Ignore settings</content>
 </contentList>
