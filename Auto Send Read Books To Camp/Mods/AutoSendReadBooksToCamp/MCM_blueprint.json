@@ -1,6 +1,6 @@
 {
     "SchemaVersion": 1,
-    "ModName": "Auto Send Books To Camp",
+    "ModName": "Auto Send Read Books To Camp",
     "Handles": {
         "NameHandle": "ha827115e4bd649e29254c8bdbb14e88b4eag",
         "DescriptionHandle": "h10f8c874e2c4429581d5924367e68a0857f8"
