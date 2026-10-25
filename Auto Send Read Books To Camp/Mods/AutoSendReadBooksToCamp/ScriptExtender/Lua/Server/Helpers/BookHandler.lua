@@ -65,7 +65,7 @@ function BookHandler.ShouldBeProcessed(item)
 end
 
 function BookHandler.SendBookToChest(character, item)
-    return Osi.SendToCampChest(item, Osi.GetHostCharacter())
+    Osi.SendToCampChest(item, Osi.GetHostCharacter())
 end
 
 ---@param character GUIDSTRING

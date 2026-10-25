@@ -32,7 +32,7 @@ function RequireFiles(path, files)
     end
 end
 
-RequireFiles("Shared/", {
+RequireFiles("Server/", {
     "Helpers/_Init",
     "EventHandlers",
     "SubscribedEvents",
