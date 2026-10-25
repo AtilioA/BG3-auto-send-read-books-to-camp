@@ -3,7 +3,7 @@ SubscribedEvents = {}
 function SubscribedEvents.SubscribeToEvents()
     local function conditionalWrapper(handler)
         return function(...)
-            if MCMGet("mod_enabled") then
+            if MCM.Get("mod_enabled") then
                 handler(...)
             else
                 ASRBTCDebug(1, "Event handling is disabled.")
@@ -13,7 +13,17 @@ function SubscribedEvents.SubscribeToEvents()
 
     ASRBTCDebug(2,
         "Subscribing to events with JSON config: " ..
-        Ext.Json.Stringify(Mods.BG3MCM.MCMAPI:GetAllModSettings(ModuleUUID), { Beautify = true }))
+        Ext.Json.Stringify({
+            mod_enabled = MCM.Get("mod_enabled"),
+            debug_level = MCM.Get("debug_level"),
+            process_now = MCM.Get("process_now"),
+            process_instantly = MCM.Get("process_instantly"),
+            mark_as_ware_instead = MCM.Get("mark_as_ware_instead"),
+            mark_only_duplicates = MCM.Get("mark_only_duplicates"),
+            ignore_quest = MCM.Get("ignore_quest"),
+            ignore_wares = MCM.Get("ignore_wares"),
+            ignore_nested = MCM.Get("ignore_nested"),
+        }, { Beautify = true }))
 
     -- Load Fallen vars when game is loaded
     Ext.Osiris.RegisterListener("LevelGameplayStarted", 2, "after", conditionalWrapper(EHandlers.OnLevelGameplayStarted))

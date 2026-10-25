@@ -10,7 +10,7 @@ end
 function EHandlers.OnGameBookInterfaceClosed(item, character)
     ASRBTCPrint(2, "GameBookInterfaceClosed event triggered: " .. item .. " by " .. character)
 
-    if not MCMGet("process_instantly") then
+    if not MCM.Get("process_instantly") then
         return
     end
 
@@ -19,8 +19,8 @@ function EHandlers.OnGameBookInterfaceClosed(item, character)
         return
     end
 
-    local markBooksAsWaresInstead = MCMGet("mark_as_ware_instead")
-    local markOnlyDuplicateBooks = MCMGet("mark_only_duplicates")
+    local markBooksAsWaresInstead = MCM.Get("mark_as_ware_instead")
+    local markOnlyDuplicateBooks = MCM.Get("mark_only_duplicates")
 
     if markOnlyDuplicateBooks then
         local isBookDuplicate = VCHelpers.Inventory:IsItemInCampChest(item)

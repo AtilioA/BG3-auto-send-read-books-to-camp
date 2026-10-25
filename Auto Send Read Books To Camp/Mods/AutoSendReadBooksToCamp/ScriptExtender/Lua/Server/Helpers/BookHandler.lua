@@ -17,10 +17,10 @@ function BookHandler.IsBookItemRetainlisted(bookItem)
     local isQuestItem = VCHelpers.Inventory:IsProbablyQuestItem(bookItem)
     local isMarkedAsWare = VCHelpers.Ware:IsWare(bookItem)
 
-    if MCMGet("ignore_quest") and isQuestItem then
+    if MCM.Get("ignore_quest") and isQuestItem then
         ASRBTCPrint(2, "Item is a quest/story item. Not trying to send to chest.")
         return true
-    elseif MCMGet("ignore_wares") and isMarkedAsWare then
+    elseif MCM.Get("ignore_wares") and isMarkedAsWare then
         ASRBTCPrint(2, "Item is marked as ware. Not trying to send to chest.")
         return true
     else
@@ -70,7 +70,7 @@ end
 
 ---@param character GUIDSTRING
 function BookHandler.ProcessInventoryBooks(character)
-    local shallow = MCMGet("ignore_nested")
+    local shallow = MCM.Get("ignore_nested")
     local books = VCHelpers.Book:GetBooksInInventory(character, shallow)
 
     if books ~= nil then
@@ -92,9 +92,9 @@ end
 ---@param character GUIDSTRING
 ---@param item EntityHandle
 function BookHandler.ProcessPotentialMarkAsWare(character, item)
-    local markAllAsWare = not MCMGet('mark_only_duplicates')
+    local markAllAsWare = not MCM.Get('mark_only_duplicates')
     local isDuplicate = VCHelpers.Inventory:IsItemInCampChest(item) ~= nil
-    local markAsWareInstead = MCMGet('mark_as_ware_instead')
+    local markAsWareInstead = MCM.Get('mark_as_ware_instead')
 
     if markAsWareInstead and (markAllAsWare or isDuplicate) then
         VCHelpers.Ware:MarkAsWare(item)
