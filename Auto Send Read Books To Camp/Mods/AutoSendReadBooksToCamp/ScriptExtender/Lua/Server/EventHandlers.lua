@@ -19,24 +19,7 @@ function EHandlers.OnGameBookInterfaceClosed(item, character)
         return
     end
 
-    local markBooksAsWaresInstead = MCM.Get("mark_as_ware_instead")
-    local markOnlyDuplicateBooks = MCM.Get("mark_only_duplicates")
-
-    if markOnlyDuplicateBooks then
-        local isBookDuplicate = VCHelpers.Inventory:IsItemInCampChest(item)
-        if isBookDuplicate then
-            ASRBTCPrint(1, "Book is a duplicate. Marking as ware.")
-            return VCHelpers.Ware:MarkAsWare(item)
-        else
-            ASRBTCDebug(1, "Item " .. item .. " is not a duplicate; sending to chest.")
-            return BookHandler.SendBookToChest(character, item)
-        end
-    elseif markBooksAsWaresInstead then
-        ASRBTCPrint(1, "Marking read book as ware.")
-        return VCHelpers.Ware:MarkAsWare(item)
-    else
-        return BookHandler.SendBookToChest(character, item)
-    end
+    BookHandler.ProcessPotentialMarkAsWare(character, item)
 end
 
 --- Fallen's MBAR compatibility

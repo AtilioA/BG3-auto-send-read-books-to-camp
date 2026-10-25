@@ -93,7 +93,7 @@ end
 ---@param item EntityHandle
 function BookHandler.ProcessPotentialMarkAsWare(character, item)
     local markAllAsWare = not MCM.Get('mark_only_duplicates')
-    local isDuplicate = VCHelpers.Inventory:IsItemInCampChest(item) ~= nil
+    local isDuplicate = VCHelpers.Inventory:IsItemInCampChest(item)
     local markAsWareInstead = MCM.Get('mark_as_ware_instead')
 
     if markAsWareInstead and (markAllAsWare or isDuplicate) then
